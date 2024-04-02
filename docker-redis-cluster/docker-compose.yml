@@ -1,0 +1,94 @@
+# 描述 Compose 文件的版本信息
+version: "3.8"
+
+# 定义服务，可以多个
+services:
+  redis-cluster:
+    image: redis:latest
+    command: redis-cli --cluster create 172.17.0.1:7001 172.17.0.1:7002 172.17.0.1:7003 172.17.0.1:7004 172.17.0.1:7005 172.17.0.1:7006 --cluster-replicas 1  --cluster-yes
+    depends_on:
+      - redis-7001
+      - redis-7002
+      - redis-7003
+      - redis-7004
+      - redis-7005
+      - redis-7006
+
+  redis-7001:
+    image: redis:latest
+    container_name: redis-7001
+    restart: "no"
+    ports:
+      - "7001:6379"
+      - "17001:16379"
+    volumes:
+      - ./7001/conf/redis.conf:/etc/redis/redis.conf
+      - ./7001/data:/data
+    command: redis-server /etc/redis/redis.conf
+
+  redis-7002:
+    image: redis:latest
+    container_name: redis-7002
+    restart: "no"
+    ports:
+      - "7002:6379"
+      - "17002:16379"
+    volumes:
+      - ./7002/conf/redis.conf:/etc/redis/redis.conf
+      - ./7002/data:/data
+    command: redis-server /etc/redis/redis.conf
+
+  redis-7003:
+    image: redis:latest
+    container_name: redis-7003
+    restart: "no"
+    ports:
+      - "7003:6379"
+      - "17003:16379"
+    volumes:
+      - ./7003/conf/redis.conf:/etc/redis/redis.conf
+      - ./7003/data:/data
+    command: redis-server /etc/redis/redis.conf
+
+  redis-7004:
+    image: redis:latest
+    container_name: redis-7004
+    restart: "no"
+    ports:
+      - "7004:6379"
+      - "17004:16379"
+    volumes:
+      - ./7004/conf/redis.conf:/etc/redis/redis.conf
+      - ./7004/data:/data
+    command: redis-server /etc/redis/redis.conf
+
+  redis-7005:
+    image: redis:latest
+    container_name: redis-7005
+    restart: "no"
+    ports:
+      - "7005:6379"
+      - "17005:16379"
+    volumes:
+      - ./7005/conf/redis.conf:/etc/redis/redis.conf
+      - ./7005/data:/data
+    command: redis-server /etc/redis/redis.conf
+
+
+  redis-7006:
+    image: redis:latest
+    container_name: redis-7006
+    restart: "no"
+    ports:
+      - "7006:6379"
+      - "17006:16379"
+    volumes:
+      - ./7006/conf/redis.conf:/etc/redis/redis.conf
+      - ./7006/data:/data
+    command: redis-server /etc/redis/redis.conf
+
+networks:
+  persist:
+    name: bridge
+    external: true
+

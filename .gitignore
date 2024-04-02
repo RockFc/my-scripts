@@ -1,0 +1,46 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+docker-redis/data
+docker-redis/logs
+
+docker-redis-cluster/7001/data
+docker-redis-cluster/7002/data
+docker-redis-cluster/7003/data
+docker-redis-cluster/7004/data
+docker-redis-cluster/7005/data
+docker-redis-cluster/7006/data
+
+docker-ubuntu/my-ubuntu*
+
