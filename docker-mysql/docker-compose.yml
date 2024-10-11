@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123 # 设置 root 用户密码
+      MYSQL_DATABASE: mydb # 初始化时创建的数据库
+      MYSQL_USER: user # 创建的数据库用户
+      MYSQL_PASSWORD: 123 # 数据库用户的密码
+    ports:
+      - "13306:3306" # 映射 MySQL 端口
+    volumes:
+      - ./mysql_data:/var/lib/mysql # 持久化数据到本地
+    restart: always # 当容器停止时自动重启

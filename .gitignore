@@ -44,3 +44,7 @@ docker-redis-cluster/7006/data
 
 docker-ubuntu/my-ubuntu*
 
+docker-mysql/mysql_data
+
+docker-s-pdf/extraConfigs
+docker-s-pdf/trainingData
