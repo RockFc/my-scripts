@@ -13,4 +13,3 @@ services:
       - "3306:3306" # 映射 MySQL 端口
     volumes:
       - ./mysql_data:/var/lib/mysql # 持久化数据到本地
-    restart: always # 当容器停止时自动重启
