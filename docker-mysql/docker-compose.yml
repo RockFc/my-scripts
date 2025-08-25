@@ -16,3 +16,13 @@ services:
       - "13060:33060" # X Plugin 默认端口（重要！）  
     volumes:
       - ./mysql_data:/var/lib/mysql # 持久化数据到本地
+    networks:
+      - my_network # 将数据库服务连接到自定义网络
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16 # 指定一个合适的子网
+

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg_test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: master       # 设置用户名
+      POSTGRES_PASSWORD: 123      # 设置密码
+      POSTGRES_DB: mydb           # 初始化数据库名称
+    ports:
+      - "5432:5432"               # 映射端口
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # 持久化数据
+
+volumes:
+  pgdata:
+
