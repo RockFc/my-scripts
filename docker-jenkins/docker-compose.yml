@@ -15,3 +15,12 @@ services:
       - JAVA_OPTS=-Duser.timezone=Asia/Shanghai
     user: root
     privileged: true
+    networks:
+      - my_network # 将数据库服务连接到自定义网络
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16 # 指定一个合适的子网

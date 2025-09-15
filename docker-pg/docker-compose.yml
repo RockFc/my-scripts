@@ -13,6 +13,15 @@ services:
       - "5432:5432"               # 映射端口
     volumes:
       - pgdata:/var/lib/postgresql/data  # 持久化数据
+    networks:
+      - my_network # 将数据库服务连接到自定义网络
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.32.0.0/16 # 指定一个合适的子网
 
 volumes:
   pgdata:
