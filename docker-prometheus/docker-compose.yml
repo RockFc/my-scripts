@@ -43,3 +43,6 @@ volumes:
 networks:
   prometheus-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/16 # 指定一个合适的子网
