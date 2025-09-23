@@ -31,6 +31,7 @@
 *.out
 *.app
 
+*.tar
 
 docker-redis/data
 docker-redis/logs
@@ -50,3 +51,10 @@ docker-s-pdf/extraConfigs
 docker-s-pdf/trainingData
 
 docker-rocketmq/data
+
+docker-jenkins/jenkins_home
+
+docker-prometheus/prometheus_data
+docker-prometheus/pushgateway_data
+
+docker-pg/pgdata
