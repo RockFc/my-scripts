@@ -8,7 +8,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+      - ./prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -31,14 +31,10 @@ services:
       - '--persistence.file=/pushgateway/data/file'
       - '--persistence.interval=5m'
     volumes:
-      - pushgateway_data:/pushgateway/data
+      - ./pushgateway_data:/pushgateway/data
     restart: unless-stopped
     networks:
       - prometheus-net
-
-volumes:
-  prometheus_data:
-  pushgateway_data:
 
 networks:
   prometheus-net:
