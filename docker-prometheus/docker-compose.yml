@@ -36,9 +36,23 @@ services:
     networks:
       - prometheus-net
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123 # 请修改为安全的密码
+    restart: unless-stopped
+    networks:
+      - prometheus-net
+
 networks:
   prometheus-net:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.40.0.0/16 # 指定一个合适的子网
+        - subnet: 172.40.0.0/16

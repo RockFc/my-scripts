@@ -56,5 +56,6 @@ docker-jenkins/jenkins_home
 
 docker-prometheus/prometheus_data
 docker-prometheus/pushgateway_data
+docker-prometheus/grafana_data
 
 docker-pg/pgdata
