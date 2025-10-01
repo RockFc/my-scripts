@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  cpp-dev-environment:
+    build: .
+    container_name: docker-client-24
+    hostname: dev-container-24
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /d/Coding:/workspace
+    ports:
+      - "2224:22"      # SSH
+    environment:
+      - TZ=Asia/Shanghai
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
