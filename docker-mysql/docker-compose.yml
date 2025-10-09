@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
@@ -17,12 +15,10 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql # 持久化数据到本地
     networks:
-      - my_network # 将数据库服务连接到自定义网络
+      - prometheus-net # 将数据库服务连接到自定义网络
 
 networks:
-  my_network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.30.0.0/16 # 指定一个合适的子网
+  prometheus-net:
+    external: true
+    name: docker-prometheus_prometheus-net
 

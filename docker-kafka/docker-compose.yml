@@ -34,3 +34,10 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       # broker.id，必须唯一，且与KAFKA_CFG_NODE_ID一致
       - KAFKA_BROKER_ID=1
+    networks:
+      - prometheus-net # 将数据库服务连接到自定义网络
+
+networks:
+  prometheus-net:
+    external: true
+    name: docker-prometheus_prometheus-net
