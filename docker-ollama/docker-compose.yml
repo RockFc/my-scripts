@@ -1,0 +1,17 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"                  # Ollama API 端口
+    volumes:
+      - ./ollama-data:/root/.ollama      # 持久化模型（非常重要！）
+    # 如果有 NVIDIA GPU，取消下面一行注释（需要安装 NVIDIA Container Toolkit）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

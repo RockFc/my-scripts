@@ -59,3 +59,5 @@ docker-prometheus/pushgateway_data
 docker-prometheus/grafana_data
 
 docker-pg/pgdata
+
+docker-ollama/ollama-data
