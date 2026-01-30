@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('web客户端代码拉取') {
+            steps {
+                // 创建项目存放目录
+                sh """
+                    rm -rf ./client/
+                    mkdir -p ./client/
+                """
+
+                // 拉取代码到指定目录
+                dir('./client/') {
+                    cleanWs()
+                    git branch: "$BRANCH",
+                    credentialsId: 'gitlab_xxx', 
+                    url: 'http://xxx/client.git'
+                    
+                    // 切换commit id
+                    sh """
+                    if [ -n "$COMMIT_ID" ]; then
+                        git checkout $COMMIT_ID
+                    fi
+                        
+                    """
+                    
+                }
+            }
+        }
+
+        stage('web客户端构建') {
+            steps {
+                // 在代码目录下执行构建脚本
+                dir('./client') {
+                    sh "bash package.sh"
+                }
+            }
+        }
+        
+        stage('web客户端备份') {
+            steps {
+                // 创建备份目录并复制构建包
+                sh """
+                    if [ ! -d $MASTER_PACK_PATH ]; then
+	                    mkdir -p $MASTER_PACK_PATH
+                    fi
+                    cp client/client.tar.gz $MASTER_PACK_PATH/
+                """
+            }
+        }
+        
+        stage('归档打包文件') {
+            steps {
+                archiveArtifacts artifacts: 'client/client.tar.gz', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '流水线执行成功，web客户端已完成构建和备份。'
+        }
+        failure {
+            echo '流水线执行失败，请检查错误日志。'
+        }
+    }
+}

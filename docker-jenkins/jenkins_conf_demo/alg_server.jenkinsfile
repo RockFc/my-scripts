@@ -1,0 +1,81 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('算法服务代码拉取') {
+            steps {
+                // 创建项目存放目录
+                sh """
+                        mkdir -p ./alg_server
+                    """
+
+                // 拉取代码到指定目录
+                dir('./alg_server/') {
+                    checkout([$class: 'GitSCM', 
+                        branches: [[name: "$BRANCH"]],
+                        doGenerateSubmoduleConfigurations: false, 
+                        extensions: [
+                            // 1. 设置克隆超时时间（单位：分钟），这里设为 60 分钟
+                            [$class: 'CloneOption', timeout: 60, shallow: true, depth: 1],
+                            // 2. 设置通用操作超时时间
+                            [$class: 'CheckoutOption', timeout: 60],
+                            // 3.只清理工作区，不删 .git 文件夹
+                            [$class: 'CleanBeforeCheckout']
+                        ], 
+                        userRemoteConfigs: [[
+                            credentialsId: 'gitlab_xxx', 
+                            url: 'http://xxx/alg_server.git'
+                        ]]
+                    ])
+                    
+                    // 切换commit id
+                    sh """
+                    if [ -n "$COMMIT_ID" ]; then
+                        git fetch --depth=1 origin $COMMIT_ID || git fetch --unshallow || true
+                        git checkout $COMMIT_ID
+                    fi
+                        
+                    """
+                }
+            }
+        }
+
+        stage('算法服务构建') {
+            steps {
+                // 在代码目录下执行构建脚本
+                dir('./alg_server') {
+                    sh """
+                        bash package.sh $BUILD_TYPE
+                    """
+                }
+            }
+        }
+        
+        stage('算法服务备份') {
+            steps {
+                // 创建备份目录并复制构建包
+                sh """
+                    if [ ! -d $MASTER_PACK_PATH ]; then
+	                    mkdir -p _MASTER_PACK_PATH
+                    fi
+                    cp alg_server/alg_server.tar.gz $MASTER_PACK_PATH/
+                """
+            }
+        }
+        
+        stage('归档打包文件') {
+            steps {
+                archiveArtifacts artifacts: 'alg_server/alg_server.tar.gz', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '流水线执行成功，算法服务已完成构建和备份。'
+        }
+        failure {
+            echo '流水线执行失败，请检查错误日志。'
+        }
+    }
+}

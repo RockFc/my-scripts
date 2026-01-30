@@ -1,0 +1,94 @@
+pipeline {
+    agent any
+    
+    parameters {
+      string defaultValue: 'V1.2.1.0', description: '请输入版本号，例如V1.0.0.0', name: 'BUILD_VERSION'
+      booleanParam defaultValue: true, description: '是否需要重新编译', name: 'COMPILE'
+    }
+    
+    stages {
+        stage('Error') {
+            when {
+                expression { return !params.BUILD_VERSION }
+                beforeAgent true
+            }
+            
+            steps{
+                echo "$MASTER_PACK_PATH: ${$MASTER_PACK_PATH}"
+                echo "Invalid build version: ${params.BUILD_VERSION}"
+                error 'Invalid build version'
+            }
+        }
+        
+        stage('Preparation') { // for display purposes
+            // Get some code from a GitLab repository
+            steps {
+                cleanWs()
+                git branch: 'master', credentialsId: 'gitlab_fuchao', url: 'http://xxx/pack.git'
+                
+                dir('../report') {
+                    cleanWs()
+                    git branch: "main", credentialsId: 'gitlab_fuchao', url: 'http://xxx/report.git'
+                    
+                    // 切换commit id
+                    sh """
+                        git checkout $REPORT_TAG
+                        
+                    """
+                }
+            }
+            
+
+        }
+        
+        stage('Build') {
+            when {
+                expression { return params.COMPILE }
+                beforeAgent true
+            }
+            
+            failFast true
+            parallel {
+                stage('Build_Client') {
+                    steps{
+                        build job: 'client', parameters: [string(name: 'BRANCH', value: "develop")]
+                    }
+                }
+                stage('Build_Work_Server') {
+                    steps{
+                        build job: 'work_seraver', parameters: [string(name: 'BRANCH', value: "develop")]
+                    }
+                }
+                stage('Build_Alg_Server') {
+                    steps{
+                        build job: 'alg_server', parameters: [string(name: 'BRANCH', value: "develop")]
+                    }
+                }            
+               
+            }
+            
+
+        }
+
+        stage('Package') {
+            steps {
+                sh 'cp -rf ${WY_MASTER_PACK_PATH}/* .'
+                echo "version: ${params.BUILD_VERSION}"
+                sh '''#!/bin/bash
+                    echo Y | ./pack.sh $BUILD_VERSION
+                '''
+            }
+        }
+        
+        stage('Results') {
+            steps {
+                archiveArtifacts allowEmptyArchive: true, artifacts: 'publish/*.sh', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
+                sh """
+                    md5sum publish/wuyue01-master-station_${BUILD_VERSION}.sh | awk '{print \$1}' > publish/wuyue01-master-station_${BUILD_VERSION}.sh.md5
+                    curl -F file=@publish/wuyue01-master-station_${BUILD_VERSION}.sh.md5 http://192.168.0.214:8000/package/pre_release/WebMaster
+                    curl -F file=@publish/wuyue01-master-station_${BUILD_VERSION}.sh http://192.168.0.214:8000/package/pre_release/WebMaster
+                """
+            }
+        }
+    }
+}

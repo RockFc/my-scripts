@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('software代码拉取') {
+            steps {
+                // 创建项目存放目录
+                sh "mkdir -p ./software_dir"
+
+                // 拉取代码到指定目录
+                dir('./software_dir') {
+                    cleanWs()
+                    git branch: "$BRANCH", 
+                    credentialsId: 'gitlab_xxx', 
+                    url: 'http://xxxx.git'
+                    
+                    // 切换branch / commit id
+                    sh """
+                        if [ -n "$COMMIT_ID" ]; then
+                            git checkout $COMMIT_ID
+                        fi
+                        
+                    """
+
+                }
+            }
+        }
+
+        stage('software构建') {
+            steps {
+                // 在代码目录下执行构建脚本
+                dir('./software_dir') {
+                    sh """
+                        bash package.sh $BUILD_TYPE
+                        bash generate_installer.sh $BUILD_VERSION
+                    """
+                }
+            }
+        }
+        
+        stage('归档打包文件') {
+            steps {
+                archiveArtifacts artifacts: 'software_dir/software_name*.sh', fingerprint: true
+                sh """
+                    md5sum software_dir/software_name${BUILD_VERSION}.sh | awk '{print \$1}' > software_dir/software_name${BUILD_VERSION}.sh.md5
+                    if [ "$BRANCH" = "master" ]; then
+                        curl -F file=@software_dir/software_name${BUILD_VERSION}.sh.md5  http://xxx/package/software_dir
+                        curl -F file=@software_dir/software_name${BUILD_VERSION}.sh  http://xxx/package/software_dir
+                    elif [ "$BRANCH" = "develop_chipTest" ]; then
+                    else
+                    fi
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '流水线执行成功，测序服务已完成构建和备份。'
+        }
+        failure {
+            echo '流水线执行失败，请检查错误日志。'
+        }
+    }
+}
