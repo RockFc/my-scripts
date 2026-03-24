@@ -1,3 +1,4 @@
+# docker-compose.yml
 services:
   cpp-dev-environment:
     build: .
@@ -5,7 +6,11 @@ services:
     hostname: dev-container-24
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /d/Coding:/workspace
+      - ~/workspace:/workspace
+      # Linux 宿主机：直接挂载
+      - ~/.ssh:/root/.ssh-host:ro
+      # Windows 宿主机：注释上面，取消注释下面
+      # - C:\Users\Administrator\.ssh:/root/.ssh-host:ro
     ports:
       - "2224:22"      # SSH
     environment:
