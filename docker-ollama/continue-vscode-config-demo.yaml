@@ -1,0 +1,39 @@
+name: Local AI Config
+version: 1.0.0
+schema: v1
+
+models:
+  # 对话模型（Chat）
+  - name: Qwen2.5 Coder 7B
+    provider: ollama
+    model: qwen2.5-coder:7b
+    apiBase: http://172.29.167.184:11434
+    roles:
+      - chat
+      - edit
+      - apply
+    defaultCompletionOptions:
+      temperature: 0.7
+      maxTokens: 8192
+      contextLength: 32768
+    params:
+      num_ctx: 32768
+
+  # 代码补全模型（Tab 补全，用小模型更快）
+  - name: DeepSeek Coder Autocomplete
+    provider: ollama
+    model: deepseek-coder:6.7b
+    apiBase: http://172.29.167.184:11434    # ← 改这里
+    roles:
+      - autocomplete
+    autocompleteOptions:
+      debounceDelay: 350
+      maxPromptTokens: 1024
+      onlyMyCode: true
+
+# 上下文提供者
+context:
+  - provider: file
+  - provider: code
+  - provider: diff
+  - provider: terminal
