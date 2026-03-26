@@ -4,21 +4,29 @@ services:
     container_name: ollama
     restart: unless-stopped
     ports:
-      - "11434:11434"                  # Ollama API 端口
+      - "11434:11434"
     volumes:
       - ./ollama-data:/root/.ollama
-
-    # ✅ GPU 正确写法（通用）
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
-
     networks:
-      - ai-network
+      - prometheus-net
+
+  ollama-exporter:
+    image: lucabecker42/ollama-exporter:latest
+    container_name: ollama-exporter
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    depends_on:
+      - ollama
+    networks:
+      - prometheus-net
 
 networks:
-  ai-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.41.0.0/16
+  prometheus-net:
+    external: true
+    name: docker-prometheus_prometheus-net   # ← 实际网络名
