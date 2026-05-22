@@ -88,7 +88,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_up",
           "refId": "A"
@@ -150,7 +150,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_models_total",
           "refId": "A"
@@ -207,7 +207,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_running_models",
           "refId": "A"
@@ -274,7 +274,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_model_memory_bytes / 1024 / 1024 / 1024",
           "legendFormat": "{{model_name}}",
@@ -336,7 +336,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_version_info",
           "legendFormat": "v{{version}}",
@@ -405,7 +405,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_model_size_bytes",
           "legendFormat": "{{model_name}}",
@@ -474,7 +474,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_model_memory_bytes",
           "legendFormat": "{{model_name}}",
@@ -487,7 +487,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "dez3poxlsmneof"
+        "uid": "afh70a8ewo0e8e"
       },
       "fieldConfig": {
         "defaults": {
@@ -538,7 +538,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "editorMode": "code",
           "expr": "ollama_model_info",
@@ -657,7 +657,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "ollama_exporter_scrape_duration_seconds_sum",
           "legendFormat": "采集耗时",
@@ -748,7 +748,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "dez3poxlsmneof"
+            "uid": "afh70a8ewo0e8e"
           },
           "expr": "rate(ollama_exporter_scrapes_total[5m])",
           "legendFormat": "采集速率",

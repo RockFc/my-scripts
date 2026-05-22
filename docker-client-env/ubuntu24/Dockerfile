@@ -38,6 +38,8 @@ RUN apt-get update --fix-missing && \
     libpq-dev \
     libmysqlclient-dev \
     libzstd-dev \
+    thrift-compiler \
+    libthrift-dev \
     && apt-get clean
 
 # 配置 SSH
