@@ -1,0 +1,24 @@
+services:
+  opencode:
+    image: ghcr.io/anomalyco/opencode
+    container_name: opencode-agent
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    environment:
+      - TZ=Asia/Shanghai
+      # 🚀 此时由于 docker-ollama 已经加入了 docker-ollama_ai-network，这行配置将彻底打通！
+      - OPENAI_API_BASE=http://docker-ollama:11434/v1
+      - OPENAI_API_KEY=ollama
+    volumes:
+      - D:\Coding:/workspace
+    working_dir: /workspace/github-code-24
+    networks:
+      - ubuntu24_default          # 联动 Ubuntu 读写代码
+      - docker-ollama_ai-network  # 联动 Ollama 消耗算力
+
+networks:
+  ubuntu24_default:
+    external: true
+  docker-ollama_ai-network:
+    external: true
