@@ -20,3 +20,9 @@ services:
     stdin_open: true
     tty: true
     restart: unless-stopped
+    networks:
+      - dev-net
+
+networks:
+  dev-net:
+    external: true

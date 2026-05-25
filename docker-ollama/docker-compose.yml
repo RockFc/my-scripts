@@ -11,7 +11,7 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
     networks:
-      - prometheus-net
+      - dev-net
 
   ollama-exporter:
     image: lucabecker42/ollama-exporter:latest
@@ -24,9 +24,8 @@ services:
     depends_on:
       - ollama
     networks:
-      - prometheus-net
+      - dev-net
 
 networks:
-  prometheus-net:
+  dev-net:
     external: true
-    name: docker-prometheus_prometheus-net   # ← 实际网络名

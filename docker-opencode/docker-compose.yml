@@ -11,14 +11,14 @@ services:
       - OPENAI_API_BASE=http://docker-ollama:11434/v1
       - OPENAI_API_KEY=ollama
     volumes:
-      - D:\Coding:/workspace
-    working_dir: /workspace/github-code-24
+      # Linux 宿主机：直接挂载
+      - ~/workspace:/workspace
+      # Windows 宿主机：注释上面，取消注释下面
+      # - D:\Coding:/workspace
+    working_dir: /workspace/code/rock_codex
     networks:
-      - ubuntu24_default          # 联动 Ubuntu 读写代码
-      - docker-ollama_ai-network  # 联动 Ollama 消耗算力
+      - dev-net
 
 networks:
-  ubuntu24_default:
-    external: true
-  docker-ollama_ai-network:
+  dev-net:
     external: true

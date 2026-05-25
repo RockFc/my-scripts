@@ -15,10 +15,9 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql # 持久化数据到本地
     networks:
-      - prometheus-net # 将数据库服务连接到自定义网络
+      - dev-net
 
 networks:
-  prometheus-net:
+  dev-net:
     external: true
-    name: docker-prometheus_prometheus-net
 

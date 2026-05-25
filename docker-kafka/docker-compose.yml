@@ -35,9 +35,8 @@ services:
       # broker.id，必须唯一，且与KAFKA_CFG_NODE_ID一致
       - KAFKA_BROKER_ID=1
     networks:
-      - prometheus-net
+      - dev-net
 
 networks:
-  prometheus-net:
+  dev-net:
     external: true
-    name: docker-prometheus_prometheus-net

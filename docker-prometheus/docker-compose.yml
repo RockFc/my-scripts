@@ -18,7 +18,7 @@ services:
       - '--web.enable-lifecycle'
     restart: unless-stopped
     networks:
-      - prometheus-net
+      - dev-net
 
   pushgateway:
     image: prom/pushgateway:latest
@@ -34,7 +34,7 @@ services:
       - ./pushgateway_data:/pushgateway/data
     restart: unless-stopped
     networks:
-      - prometheus-net
+      - dev-net
 
   grafana:
     image: grafana/grafana:latest
@@ -48,11 +48,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin123 # 请修改为安全的密码
     restart: unless-stopped
     networks:
-      - prometheus-net
+      - dev-net
 
 networks:
-  prometheus-net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.40.0.0/16
+  dev-net:
+    external: true
