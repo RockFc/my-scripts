@@ -78,6 +78,7 @@ EOF
 
 > **注意**：配置文件名必须是 `opencode.json`，不是 `config.json`。
 > 字段名是 `provider`（单数），不是 `providers`。
+> 如果开发环境在容器中，将"baseURL"改为："baseURL": "http://ollama:11434/v1"
 
 查看 Ollama 已有模型：
 
