@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  cpp-dev:
+    # 用本地 Dockerfile 构建（和 Dockerfile 放同一目录）
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: cpp-dev:ubuntu18.04
+
+    container_name: ubuntu18-04-cpp-dev
+
+    # 交互模式，保持容器运行
+    stdin_open: true
+    tty: true
+
+    # 挂载宿主机代码目录到容器
+    volumes:
+      - /home/fuchao/workspace/code:/workspace                     # 目录挂载到 /workspace
+      - /opt/Qt5.14.2/5.14.2/gcc_64:/opt/Qt5.14.2/5.14.2/gcc_64:ro # Qt挂载
+      - ~/.ssh:/root/.ssh:ro                # SSH 密钥（只读，用于 git）
+      - ~/.gitconfig:/root/.gitconfig:ro    # git 配置
+
+    # 环境变量
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=C.UTF-8
+
+    # 网络（使用宿主机网络，方便访问内网服务）
+    network_mode: host
+
+    # 如果需要 GPU 支持，打开下面的注释
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+    # 容器退出后自动重启（开发环境可以关掉）
+    # restart: unless-stopped
